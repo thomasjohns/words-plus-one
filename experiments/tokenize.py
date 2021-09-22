@@ -24,9 +24,9 @@ except LookupError:
     else:
         ssl._create_default_https_context = _create_unverified_https_context
 
-    # The Punkt Sentence Tokenizer divides a text into a list of sentences
-    # using an unsupervised algorithm to build a model for abbreviation words,
-    # collocations, and words that start sentences.
+    # The Punkt Sentence Tokenizer divides a text into a list of sentences using an unsupervised
+    # algorithm to build a model for abbreviation words, collocations, and words that start
+    # sentences.
     nltk.download('punkt')
     # TODO: I think these might be useful when using the toktok tokenizer
     # nltk.download('perluniprops')
