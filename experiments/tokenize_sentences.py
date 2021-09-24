@@ -37,7 +37,7 @@ except LookupError:
 # toktok_tokenizer = ToktokTokenizer()
 # tokens = toktok_tokenizer.tokenize(sentence)
 
-with open('data/cadiz_ch_1_text.txt', 'r', encoding='utf-8') as fp:
+with open('data/cadiz_ch_1_text_small.txt', 'r', encoding='utf-8') as fp:
     text = fp.read().replace('\n', ' ')
 
 sentences = spanish_tokenizer.sentences_from_text(text)
