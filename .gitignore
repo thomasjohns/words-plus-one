@@ -1,2 +1,4 @@
 experiments/.venv/
+experiments/split_audio_out
 .venv/
+__pycache__/
