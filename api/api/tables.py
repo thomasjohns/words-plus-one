@@ -1,4 +1,5 @@
 import datetime as dt
+from typing import Literal
 from typing import Optional
 from uuid import UUID
 
@@ -41,17 +42,26 @@ class Fragment(Table):
 # or create a new one
 
 
-class WordText(Table):
+class WordBase:
+    text: str
+    language: str
+    frequency_rank: Optional[int] = None
+
+
+class IgnoredWord(Table, WordBase):
+    kind: Literal['detected_proper_noun', 'user_ignored']
+
+
+class Word(Table, WordBase):
     # TODO
     # wonder if it is possible to create word for
     # each context ... (for each tranlation?)
     # use language models?
-    text: str
-    language: str
-    frequency_rank: Optional[int]
+    pass
 
 
 # or WordMeaning ???
+# or WordSense!!
 class WordMeaning(Table):
     # TODO
     # in a sense, this is the actual word
@@ -63,9 +73,27 @@ class WordMeaning(Table):
     # link to another table with multiple tranlations
     # with rankings?
     translation: str
-    meaning ??? (a vector embedding?)
+    # meaning ??? (a vector embedding?)
+    # possible that this ^ should be done outside the
+    # database?
 
-    word_text_id
+    # could also organize by part of speach taging!?
+    # e.g. the noun 'giant' vs the adjective 'giant'
+    part_of_speech: Literal[...]
+
+    # also named entity recognition?
+
+    # bitext word alignment!?
+
+    # also maybe there is a way to incrementally add
+    # complexity here to not get too hung up on it
+
+    # example text (for this word meaning/sense)?
+
+    # add one for each sense,
+    # and then one for unknown sense?
+
+    word_id
 
 
 class WordMeaningTranslationText(Table):
@@ -75,14 +103,6 @@ class WordMeaningTranslationText(Table):
     num_times_used: int
 
     word_meaning_id
-
-
-# FIXME/HERE: how to handle `yo soy harry potter`
-class IgnoredWord(Table):
-    # TODO
-    word_id
-
-    user_id
 
 
 class WordMeaningMemory(Table):
