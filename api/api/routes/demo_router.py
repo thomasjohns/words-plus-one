@@ -8,6 +8,6 @@ from api.types import APIResponse
 router = APIRouter()
 
 
-@router.get('/test')
-async def test() -> APIResponse:
+@router.get('/demo')
+async def demo() -> APIResponse:
     return {'hello': 'world'}

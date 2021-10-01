@@ -1,4 +1,5 @@
 from typing import Any
+from typing import Literal
 
 
 # The FastAPI response annotation is variable:

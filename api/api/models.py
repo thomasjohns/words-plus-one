@@ -60,6 +60,12 @@ class Word(Table, WordBase):
     pass
 
 
+class Lexeme(Table):
+    text: str
+    language: str
+    frequency_rank: Optional[int] = None
+
+
 # or WordMeaning ???
 # or WordSense!!
 class WordMeaning(Table):
