@@ -1,13 +1,13 @@
 from fastapi import FastAPI as FastAPIApp
 
-from api.routes import demo_router
+from api.routers import demo_router
 
 
 # TODO: add middleware/etc. registration
 
 
 def register_routers(app: FastAPIApp) -> None:
-    app.include_router(demo_router.router)
+    app.include_router(demo_router)
 
 
 # TODO: add config param

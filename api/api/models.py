@@ -61,10 +61,30 @@ class Word(Table, WordBase):
 
 
 class Lexeme(Table):
+    # TODO this is like run
+    pass
+
+
+class WordForm(Table):
+    # TODO this is like run, runs, ran, running
     text: str
     language: str
     frequency_rank: Optional[int] = None
 
+    # many word forms for a single lexeme
+    lexeme_id
+
+
+# NOTE: One version of the app could assign a
+#       single WordSense to each WordForm and
+#       a single memory for each WordSense.
+#       It seems like different WordForms might
+#       have different senses anyway. One interesting
+#       thing could be to bump the memory of other
+#       WordForms of the same Lexeme when one instance
+#       of a WordForm is reviewed, but that might be
+#       tricky because it might not make sense to bump
+#       all senses of a WordForm.
 
 # or WordMeaning ???
 # or WordSense!!
