@@ -14,6 +14,8 @@ class Table(SQLModel, table=True):
 class User(Table):
     # TODO
     name: str
+    active_source_language: str
+    active_target_language: str
 
 
 class Source(Table):
@@ -32,6 +34,9 @@ class Fragment(Table):
     text: str
 
     source_id
+    # TODO
+    prev_context: str  # 3 sentences back?
+    next_context: str  # 3 sentences forward?
 
 
 # for a word text there are multiple meanings
@@ -75,6 +80,9 @@ class WordForm(Table):
     lexeme_id
 
 
+# FIXME: Create a ideas.txt file and move these notes and
+#        TODOs here to it.
+
 # NOTE: One version of the app could assign a
 #       single WordSense to each WordForm and
 #       a single memory for each WordSense.
@@ -86,9 +94,48 @@ class WordForm(Table):
 #       tricky because it might not make sense to bump
 #       all senses of a WordForm.
 
+# TODO: Is there a way to represent the knowledge of a
+#       grammar form? Could the recommendation algorithm
+#       recommend a sentence with a new grammar form, but
+#       with known word senses?
+
+# TODO: Use containing discourse to determine sense?
+#       I.e. look at e.g. whole paragraph?
+
+# TODO: Some way to store word colocations? Maybe just let
+#       the language model take care of this based on its
+#       training?
+
+# TODO: Handle garden-path sentences? Think this could
+#       be done by assigning a memory to the fragments
+#       in addition to the individual word senses composed
+#       in the sentence.
+
+# TODO: Similar sounding and spelling word
+#       seperation/decorrelation in the memory algorithm? I.e.
+#       handling similar words that are easily "mixed up".
+
+# TODO: Get google translate, msft, and deepl fragment translations?
+
+# TODO: Can there be some kind of memory link between different
+#       word forms of the same morphology? (the linguistic terminology
+#       in this sentence may be incorrect.)
+
+# TODO: The amount that you would bump the memory of any given word,
+#       depends on to what extent that word was recalled from long-term
+#       memory or short term memory.
+
+# TODO: Some kind of memory influence based on source to target
+#       language cognates.
+
+# TODO: Is it possible to provide a translation service a chunk in
+#       context, i.e. pass a specific chunk and a full sentence to
+#       the translation service, and get a translation for just the
+#       chunk informed by the context?
+
 # or WordMeaning ???
 # or WordSense!!
-class WordMeaning(Table):
+class WordSense(Table):
     # TODO
     # in a sense, this is the actual word
     # is there a way to encode context?
@@ -97,15 +144,29 @@ class WordMeaning(Table):
     source_language: str
     target_language: str
     # link to another table with multiple tranlations
-    # with rankings?
+    # with rankings? this could be useful for informational
+    # purposes if not academic purposes.
     translation: str
     # meaning ??? (a vector embedding?)
     # possible that this ^ should be done outside the
     # database?
 
+    # could maybe use wordnet/nltk/lesk or a specialization of BERT?
+    wordnet_sense: Optional[str]
+
+    # TODO sense vector embedding?
+    # TODO pointer into a GloVe resource?
+    embedding_sense: Optional[...]
+
     # could also organize by part of speach taging!?
     # e.g. the noun 'giant' vs the adjective 'giant'
-    part_of_speech: Literal[...]
+    part_of_speech: Optional[Literal[...]]
+
+    # not sure about these
+    semantic_role: Optional[Literal[...]]
+    # SpaCy features fast statistical NER for named entity recognition
+    named_entity: Optional[Literal[...]]
+    # TODO: should variants for ^ be encoded in a pydantic Field?
 
     # also named entity recognition?
 
@@ -122,23 +183,30 @@ class WordMeaning(Table):
     word_id
 
 
-class WordMeaningTranslationText(Table):
+class WordSenseTranslationText(Table):
     # TODO
     # inferred text match based on translation
     text: str
     num_times_used: int
 
-    word_meaning_id
+    word_sense_id
 
 
-class WordMeaningMemory(Table):
+class WordSenseMemory(Table):
     # TODO
     # created for all words?
     # updated during review and reading
     strength: Optional[dt.timedelta]
 
     user_id
-    word_id
+    word_sense_id
+
+
+# FIXME ???
+class WordSenseAppearance(Table):
+    # TODO: keep track of all appearances of a particular sense
+    #       of a particular word
+    pass
 
 
 class FragmentTranslationMemory(Table):
