@@ -197,6 +197,7 @@ class WordSenseMemory(Table):
     # created for all words?
     # updated during review and reading
     strength: Optional[dt.timedelta]
+    last_reviewed_datetime: dt.datetime
 
     user_id
     word_sense_id
